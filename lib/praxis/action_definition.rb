@@ -277,6 +277,8 @@ module Praxis
           'query'
         end
         desc[:type][:attributes][k][:source] = source
+        # Override/ensure a url param is always required (even if the use hasn't defined it as such)
+        desc[:type][:attributes][k][:required] = true if source == 'url'
       end
       required_params = desc[:type][:attributes].select{|k,v| v[:source] == 'query' && v[:required] == true }.keys
       phash = required_params.each_with_object({}) do | name, hash |
