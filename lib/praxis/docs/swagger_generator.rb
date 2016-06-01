@@ -4,35 +4,12 @@ module Praxis
     class SwaggerGenerator< Generator
       API_DOCS_DIRNAME = 'docs/swagger'
 
-
-      def initialize(root)
-        require 'yaml'
-        @resources_by_version =  Hash.new do |h,k|
-          h[k] = Set.new
-        end
-        initialize_directories(root)
-
-        Attributor::AttributeResolver.current = Attributor::AttributeResolver.new
-        collect_infos
-        collect_resources
-        collect_types
-      end
-
-#      def save!
-#        # Restrict the versions listed in the index file to the ones for which we have at least 1 resource
-#        write_index_file( for_versions: resources_by_version.keys )
-#        resources_by_version.keys.each do |version|
-#          write_version_file(version)
-#        end
-#      end
-
       private
 
       def write_index_file( for_versions:  )
       end
 
       def write_version_file( version )
-
         version_info = infos_by_version[version]
         # Hack, let's "inherit/copy" all traits of a version from the global definition
         # Eventually traits should be defined for a version (and inheritable from global) so we'll emulate that here
@@ -40,14 +17,31 @@ module Praxis
         dumped_resources = dump_resources( resources_by_version[version] )
         found_media_types =  resources_by_version[version].select{|r| r.media_type}.collect {|r| r.media_type.describe }
 
-        collected_types = Set.new
-        collect_reachable_types( dumped_resources, collected_types )
+        # We'll start by processing the rendered mediatypes
+        processed_types = Set.new(resources_by_version[version].select do|r|
+          r.media_type && !r.media_type.is_a?(Praxis::SimpleMediaType)
+        end.collect(&:media_type))
+
+        newfound = Set.new
         found_media_types.each do |mt|
-          collect_reachable_types( { type: mt} , collected_types )
+          newfound += scan_dump_for_types( { type: mt} , processed_types )
+        end
+        # Then will process the rendered resources (noting)
+        newfound += scan_dump_for_types( dumped_resources, Set.new )
+
+        # At this point we've done a scan of the dumped resources and mediatypes.
+        # In that scan we've discovered a bunch of types, however, many of those might have appeared in the JSON
+        # rendered in just shallow mode, so it is not guaranteed that we've seen all the available types.
+        # For that we'll do a (non-shallow) dump of all the types we found, and scan them until the scans do not
+        # yield types we haven't seen before
+        while !newfound.empty? do
+          dumped = newfound.collect(&:describe)
+          processed_types += newfound
+          newfound = scan_dump_for_types( dumped, processed_types )
         end
 
-        dumped_info = dump_info_object( version, version_info[:info] )
-        dumped_schemas = dump_schemas( collected_types )
+        dumped_info = dump_info_object(version, version_info[:info])
+        dumped_schemas = dump_schemas( processed_types )
 
         full_data = {
           swagger: "2.0",
@@ -70,8 +64,12 @@ module Praxis
         end
         puts JSON.pretty_generate( full_data )
         # Write the file
-        version_file = ( version == "n/a" ? "unversioned" : version )
-        filename = File.join(doc_root_dir, "swagger")
+        version_name = ( version == "n/a" ? "unversioned" : version )
+        version_dir = "#{doc_root_dir}/#{version_name}"
+        FileUtils.rm_rf version_dir if File.exists?(version_dir)
+        FileUtils.mkdir_p version_dir unless File.exists? version_dir
+
+        filename = File.join(version_dir, "swagger")
 
         puts "Generating swagger file : #{filename} (json and yml) "
         json_data = JSON.pretty_generate(full_data)
@@ -186,6 +184,7 @@ module Praxis
           if headers_object = dump_response_headers_object( info[:headers] )
             data[:headers] = headers_object
           end
+
           if info[:payload] && ( examples_object = dump_response_examples_object( info[:payload][:examples] ) )
             data[:examples] = examples_object
           end
@@ -201,6 +200,7 @@ module Praxis
       end
 
       def dump_response_examples_object( examples )
+        return nil unless examples
         examples.each_with_object({}) do |(name, info), hash|
           hash[info[:content_type]] = info[:body]
         end
@@ -291,43 +291,14 @@ module Praxis
           :string
         when :boolean
           :boolean
+        when :array
+          :array
+        when :any # Fixme!!! not sure what we should do here...
+          :object
         else
           raise "Unknown praxis family type: #{praxis_type[:family]}"
         end
       end
-#      def dump_resources( resources )
-#        resources.each_with_object({}) do |r, hash|
-#          # Do not report undocumentable resources
-#          next if r.metadata[:doc_visibility] == :none
-#          context = [r.id]
-#          resource_description = r.describe(context: context)
-#
-#          # strip actions with doc_visibility of :none
-#          resource_description[:actions].reject! { |a| a[:metadata][:doc_visibility] == :none }
-#
-#          # Go through the params/payload of each action and augment them by
-#          # adding a generated example (then stick it into the description hash)
-#          r.actions.each do |action_name, action|
-#            # skip actions with doc_visibility of :none
-#            next if action.metadata[:doc_visibility] == :none
-#
-#            action_description = resource_description[:actions].find {|a| a[:name] == action_name }
-#          end
-#
-#          hash[r.id] = resource_description
-#        end
-#      end
-#
-#      def dump_example_for(context_name, object)
-#        example = object.example(Array(context_name))
-#        if object.is_a? Praxis::Blueprint
-#          example.render(view: :master)
-#        elsif object.is_a? Attributor::Attribute
-#          object.dump(example)
-#        else
-#          raise "Do not know how to dump this object (it is not a Blueprint or an Attribute): #{object}"
-#        end
-#      end
 
     end
   end
