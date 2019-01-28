@@ -91,6 +91,7 @@ module Praxis
     autoload :Rendering, 'praxis/extensions/rendering'
     autoload :FieldExpansion, 'praxis/extensions/field_expansion'
     autoload :AttributeFiltering, 'praxis/extensions/attribute_filtering'
+    autoload :Pagination, 'praxis/extensions/pagination'    
   end
 
   module Handlers
