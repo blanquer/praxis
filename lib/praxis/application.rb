@@ -73,15 +73,7 @@ module Praxis
 
       @builder.run(@router)
       @app = @builder.to_app
-
-      Notifications.subscribe 'rack.request.all'.freeze do |name, start, finish, _id, payload|
-        duration = (finish - start) * 1000
-        Stats.timing(name, duration)
-
-        status, _, _ = payload[:response]
-        Stats.increment "rack.request.#{status}"
-      end
-
+      
       self
     end
 
