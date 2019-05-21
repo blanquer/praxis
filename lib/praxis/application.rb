@@ -181,7 +181,6 @@ module Praxis
 
           attribute :show_exceptions, Attributor::Boolean, default: false
           attribute :x_cascade, Attributor::Boolean, default: true
-          attribute :enable_praxis_stats, Attributor::Boolean, default: true
         end
       end
     end
@@ -197,15 +196,6 @@ module Praxis
       builder.run(@router)
       @app = builder.to_app
 
-      if self.config.praxis.enable_praxis_stats
-        Notifications.subscribe 'rack.request.all'.freeze do |name, start, finish, _id, payload|
-          duration = (finish - start) * 1000
-          Stats.timing(name, duration)
-
-          status, _, _ = payload[:response]
-          Stats.increment "rack.request.#{status}"
-        end
-      end
       $praxis_initializing_instance = saved_value
       self
     end
