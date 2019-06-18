@@ -105,7 +105,6 @@ describe Praxis::ResourceDefinition do
       app = Praxis::Application.new(skip_registration: true)
       app.versioning_scheme = [:header, :params]
       app.handler 'json' , Praxis::Handlers::JSON
-      app.handler 'x-www-form-urlencoded', Praxis::Handlers::WWWForm
       app.api_definition.instance_eval do |api_def|
         api_def.info do
           base_path '/api/:base_param'

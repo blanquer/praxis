@@ -5,12 +5,10 @@ describe Praxis::ResponseDefinition do
     app = Praxis::Application.new(skip_registration: true)
     app.versioning_scheme = [:header, :params]
     app.handler 'json' , Praxis::Handlers::JSON
-    app.handler 'x-www-form-urlencoded', Praxis::Handlers::WWWForm
-    app.handler 'xml', Praxis::Handlers::XML
     app.api_definition.instance_eval do |api_def|
       api_def.info do
         base_path "/api"
-        produces 'json','xml'
+        produces 'json'
       end
     end
     app
@@ -538,12 +536,9 @@ describe Praxis::ResponseDefinition do
       context 'examples' do
         subject(:examples) { payload[:examples] }
         its(['json', :content_type]) { should eq('application/vnd.acme.instance+json') }
-        its(['xml', :content_type]) { should eq('application/vnd.acme.instance+xml') }
 
         it 'properly encodes the example bodies' do
-          json = praxis_app.handlers['json'].parse(examples['json'][:body])
-          xml = praxis_app.handlers['xml'].parse(examples['xml'][:body])
-          expect(json).to eq xml
+          expect(JSON.parse(examples['json'][:body])).to be_kind_of(Hash)
         end
 
       end
@@ -556,7 +551,6 @@ describe Praxis::ResponseDefinition do
 
         it 'still renders examples but as pure handler types for contents' do
           expect(subject['json'][:content_type]).to eq('application/json')
-          expect(subject['xml'][:content_type]).to eq('application/xml')
         end
       end
 

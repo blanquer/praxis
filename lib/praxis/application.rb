@@ -153,8 +153,7 @@ module Praxis
       
       builtin_handlers = {
         'plain' => Praxis::Handlers::Plain,
-        'json' => Praxis::Handlers::JSON,
-        'x-www-form-urlencoded' => Praxis::Handlers::WWWForm
+        'json' => Praxis::Handlers::JSON
       }
       
       # Register built-in handlers unless the app already provided its own
