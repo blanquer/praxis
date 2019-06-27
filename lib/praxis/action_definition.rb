@@ -13,9 +13,7 @@ module Praxis
     attr_reader :name
     attr_reader :resource_definition
     attr_reader :api_definition
-    attr_reader :routes
-    attr_reader :primary_route
-    attr_reader :named_routes
+    attr_reader :route
     attr_reader :responses
     attr_reader :traits
 
@@ -38,7 +36,7 @@ module Praxis
       @resource_definition = resource_definition
       @responses = Hash.new
       @metadata = Hash.new
-      @routes = []
+      @route = nil
       @traits = []
       @api_definition = resource_definition.application.api_definition
 
@@ -181,12 +179,7 @@ module Praxis
     def routing(&block)
       @routing_config.instance_eval &block
 
-      @routes = @routing_config.routes
-      @primary_route = @routing_config.routes.first
-      @named_routes = @routing_config.routes.each_with_object({}) do |route, hash|
-        next if route.name.nil?
-        hash[route.name] = route
-      end
+      @route = @routing_config.route
     end
 
 
@@ -234,9 +227,8 @@ module Praxis
         end
         hash[:traits] = traits if traits.any?
         # FIXME: change to :routes along with api browser
-        hash[:urls] = routes.collect do |route|
-          ActionDefinition.url_description(route: route, params: self.params, params_example: params_example)
-        end.compact
+        # FIXME: change urls to url ... (along with the browser)
+        hash[:urls] = [ ActionDefinition.url_description(route: route, params: self.params, params_example: params_example) ]
         self.class.doc_decorations.each do |callback|
           callback.call(self, hash)
         end
@@ -254,10 +246,10 @@ module Praxis
 
     def params_description(example:)
       route_params = []
-      if primary_route.nil?
-        warn "Warning: No routes defined for #{resource_definition.name}##{name}."
+      if route.nil?
+        warn "Warning: No route defined for #{resource_definition.name}##{name}."
       else
-        route_params = primary_route.path.
+        route_params = route.path.
           named_captures.
           keys.
           collect(&:to_sym)
