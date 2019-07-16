@@ -30,13 +30,13 @@ module Praxis
       @member_type
     end
 
-    def self.views
-      @views ||= begin
-        @member_type.views.each_with_object(Hash.new) do |(name, view), hash|
-          hash[name] = Praxis::CollectionView.new(name, @member_type, view)
-        end
-      end
-    end
+    # def self.views
+    #   @views ||= begin
+    #     @member_type.views.each_with_object(Hash.new) do |(name, view), hash|
+    #       hash[name] = Praxis::CollectionView.new(name, @member_type, view)
+    #     end
+    #   end
+    # end
 
     def self.domain_model
       @member_type.domain_model
