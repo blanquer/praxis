@@ -10,29 +10,47 @@ module Praxis
           @query = query
         end
 
-        def generate(debug: false)
-          # TODO: unfortunately, I think we can only control the select clauses for the top model 
-          # (as I'm not sure ActiveRecord supports expressing it in the join...)
-          @query = add_select(query: query, selector_node: selector)
-          eager_hash = _eager(selector)
+        # def generate(debug: false)
+        #   # TODO: unfortunately, I think we can only control the select clauses for the top model 
+        #   # (as I'm not sure ActiveRecord supports expressing it in the join...)
+        #   @query = add_select(query: query, selector_node: selector)
+        #   eager_hash = _eager(selector)
 
-          @query = @query.includes(eager_hash)          
+        #   @query = @query.includes(eager_hash)          
+        #   explain_query(query, eager_hash) if debug
+
+        #   @query
+        # end
+
+        def select_fields(selector_node:)
+          annotation = "'#{selector_node.resource.name}' as _resource"
+          (selector_node.select + [selector_node.resource.model.primary_key.to_sym] + [annotation]).to_a
+        end
+
+        def generate(debug: false)
+          pluck_array = _eager(selector)
+
+          #@query = @query.includes(eager_hash)          
+          @query = query.deep_pluck(*pluck_array)
           explain_query(query, eager_hash) if debug
 
           @query
         end
 
-        def add_select(query:, selector_node:)
-          # We're gonna always require the PK of the model, as it is a special case for AR, and the app itself 
-          # might assume it is always there and not be surprised by the fact that if it isn't, it won't blow up
-          # in the same way as any other attribute not being loaded...i.e., ActiveModel::MissingAttributeError: missing attribute: xyz
-          select_fields = selector_node.select + [selector_node.resource.model.primary_key.to_sym]
-          select_fields.empty? ? query : query.select(*select_fields)
-        end
+        # def add_select(query:, selector_node:)
+        #   # We're gonna always require the PK of the model, as it is a special case for AR, and the app itself 
+        #   # might assume it is always there and not be surprised by the fact that if it isn't, it won't blow up
+        #   # in the same way as any other attribute not being loaded...i.e., ActiveModel::MissingAttributeError: missing attribute: xyz
+        #   select_fields = selector_node.select + [selector_node.resource.model.primary_key.to_sym]
+        #   select_fields.empty? ? query : query.select(*select_fields)
+        # end
+
+
 
         def _eager(selector_node)
-          selector_node.tracks.each_with_object({}) do |(track_name, track_node), h|
-            h[track_name] = _eager(track_node)
+          the_fields = select_fields(selector_node: selector_node)
+          selector_node.tracks.each_with_object(the_fields) do |(track_name, track_node), h|
+            h.push({ "#{track_name}" => _eager(track_node) })
           end
         end
 
