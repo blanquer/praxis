@@ -124,6 +124,7 @@ module Praxis
   end
 
   module Mapper
+    autoload :ReadOnlyModel, 'praxis/mapper/read_only_model'
     autoload :Resource, 'praxis/mapper/resource'
     autoload :SelectorGenerator, 'praxis/mapper/selector_generator'
   end

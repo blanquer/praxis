@@ -23,18 +23,23 @@ module Praxis
         # end
 
         def select_fields(selector_node:)
-          annotation = "'#{selector_node.resource.name}' as _resource"
-          (selector_node.select + [selector_node.resource.model.primary_key.to_sym] + [annotation]).to_a
+          #annotation = "'#{selector_node.resource.name}' as _resource"
+          #annotation = :updated_at
+          (selector_node.select + [selector_node.resource.model.primary_key.to_sym]).to_a
         end
 
         def generate(debug: false)
+          require 'deep_pluck'
           pluck_array = _eager(selector)
 
-          #@query = @query.includes(eager_hash)          
-          @query = query.deep_pluck(*pluck_array)
-          explain_query(query, eager_hash) if debug
+          #@query = @query.includes(eager_hash)
+          results = query.deep_pluck(*pluck_array)
+          explain_query(results, eager_hash) if debug
 
-          @query
+          top_model = selector.resource.model
+          results.map do |result|
+            Praxis::Mapper::ReadOnlyModel.for(top_model).new(result, selector)
+          end
         end
 
         # def add_select(query:, selector_node:)

@@ -14,9 +14,9 @@ describe Praxis::Extensions::FieldSelection::ActiveRecordQuerySelector do
         name: true,
         books: true
       },
-      tags: {
-        name: true
-      }
+      # tags: {
+      #   name: true
+      # }
     }
   end
   let(:expected_select_from_to_query) do
@@ -60,6 +60,49 @@ describe Praxis::Extensions::FieldSelection::ActiveRecordQuerySelector do
   context '#generate with a real AR model' do
     let(:query) { ActiveBook }
 
+    context 'help with hacking with the readonly objects' do
+      let(:selector_fields) do
+        { 
+          name: true,
+          author: {
+            id: true,
+            books: {
+              simple_name: true
+            }
+          },
+          category: {
+            name: true,
+           books: true
+          },
+          tags: {
+            name: true
+          }
+        }
+      end
+    
+      it 'creates our lightweight instances of models' do
+        ActiveRecord::Base.logger = Logger.new(STDOUT)
+
+        result = subject.generate
+        expect(result.size).to be 2
+        book1 = result[0]
+        book2 = result[1]
+        expect(book1.author.id).to eq 11
+        expect(book1.author.books.size).to eq 1
+        expect(book1.author.books.map(&:author_id)).to eq([11])
+        expect(book1.category.name).to eq 'cat1'
+        expect(book1.tags.map(&:name)).to match_array(['blue','red'])
+
+        expect(book2.author.id).to eq 22
+        expect(book2.author.books.size).to eq 1
+        expect(book2.author.books.map(&:simple_name)).to eq(['Book2'])
+        expect(book2.category.name).to eq 'cat2'
+        expect(book2.tags.map(&:name)).to match_array(['red'])
+
+        # Raises a not loaded if we try to get a name from the embedded author
+        expect{book2.author.name}.to raise_error(/Attribute name not loaded/)
+      end
+    end
     it 'calls the select columns for the top level, and includes the right association hashes' do
       expected_includes = {
         author: {

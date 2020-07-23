@@ -64,6 +64,7 @@ end
 
 class ActiveTag < ActiveRecord::Base
   include Praxis::Mapper::ActiveModelCompat
+  has_many :taggings, class_name: 'ActiveTagging', foreign_key: :tag_id
 end
 
 class ActiveTagging < ActiveRecord::Base

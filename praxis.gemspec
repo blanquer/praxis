@@ -54,4 +54,5 @@ Gem::Specification.new do |spec|
   # Just for the query selector extensions etc...
   spec.add_development_dependency 'sequel', '~> 5'
   spec.add_development_dependency 'activerecord', '> 4'
+  spec.add_development_dependency 'deep_pluck'
 end
