@@ -8,9 +8,11 @@ module Praxis
         return our_model_class if our_model_class
         # Create the class for it
         klass = Class.new do
+          attr_reader :_resource # To make rendering happy
           def initialize( object, selector)
             @object = object
             @selector = selector
+            @_resource = selector.resource.new(self)
           end
           # Define a getter for each field
           attributes = model_klass.columns.map{|c| c.name.to_s}
@@ -19,11 +21,9 @@ module Praxis
             module_eval <<-ACCESSOR_RUBY, __FILE__, __LINE__ + 1
             def #{name}
               # TODO nil @object?
-              result = @object["#{name}".freeze]
-              unless result
+              @object.fetch("#{name}".freeze) do
                 raise "Attribute #{name} not loaded! for \#\{@selector.resource.model\}: \#\{@object\}" unless @object.key?("#{name}.freeze")
               end
-              result
             end
             ACCESSOR_RUBY
           end
@@ -34,8 +34,7 @@ module Praxis
             module_eval <<-ASSOC_RUBY, __FILE__, __LINE__ + 1
             def #{name}
               # TODO nil @object?
-              result = @object["#{name}".freeze]
-              unless result
+              result = @object.fetch("#{name}".freeze) do
                 raise "Not loaded!" unless @object.key?("#{name}".freeze)
               end
               return nil if result.nil?
