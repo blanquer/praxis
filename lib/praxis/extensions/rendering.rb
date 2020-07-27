@@ -9,7 +9,8 @@ module Praxis
         loaded = self.media_type.load(object)
         renderer = Praxis::Renderer.new(include_nil: include_nil)
         renderer.render(loaded, self.expanded_fields)
-      rescue Attributor::DumpError
+      rescue Attributor::DumpError => e
+        binding.pry
         if self.media_type.domain_model == Object
           warn "Detected the rendering of an object of type #{self.media_type} without having a domain object model set.\n" +
                "Did you forget to define it?"
