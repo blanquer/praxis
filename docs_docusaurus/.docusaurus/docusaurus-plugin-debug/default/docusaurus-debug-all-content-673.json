@@ -1,0 +1,416 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/docs",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/Users/blanquer/dev/praxis/praxis/docs_docusaurus/sidebars.js",
+          "docsDirPath": "/Users/blanquer/dev/praxis/praxis/docs_docusaurus/docs",
+          "docsDirPathLocalized": "/Users/blanquer/dev/praxis/praxis/docs_docusaurus/i18n/en/docusaurus-plugin-content-docs/current",
+          "mainDocId": "doc1",
+          "sidebars": {
+            "mainSidebar": [
+              {
+                "collapsed": true,
+                "type": "category",
+                "label": "Intro",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "intro/intro"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "intro/installation"
+                  }
+                ]
+              },
+              {
+                "collapsed": false,
+                "type": "category",
+                "label": "Getting Started",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "gettingStarted/gettingStarted"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "doc2"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "doc3"
+                  }
+                ]
+              }
+            ]
+          },
+          "permalinkToSidebar": {
+            "/docs/doc2": "mainSidebar",
+            "/docs/doc3": "mainSidebar",
+            "/docs/gettingStarted/gettingStarted": "mainSidebar",
+            "/docs/intro/installation": "mainSidebar",
+            "/docs/intro/intro": "mainSidebar"
+          },
+          "docs": [
+            {
+              "unversionedId": "doc1",
+              "id": "doc1",
+              "isDocsHomePage": false,
+              "title": "Style Guide",
+              "description": "You can write content using GitHub-flavored Markdown syntax.",
+              "source": "@site/docs/doc1.md",
+              "slug": "/",
+              "permalink": "/docs/",
+              "version": "current",
+              "sidebar_label": "Style Guide"
+            },
+            {
+              "unversionedId": "doc2",
+              "id": "doc2",
+              "isDocsHomePage": false,
+              "title": "Document Number 2",
+              "description": "This is a link to another document. This is a link to an external page.",
+              "source": "@site/docs/doc2.md",
+              "slug": "/doc2",
+              "permalink": "/docs/doc2",
+              "version": "current",
+              "sidebar": "mainSidebar",
+              "previous": {
+                "title": "Getting Started",
+                "permalink": "/docs/gettingStarted/gettingStarted"
+              },
+              "next": {
+                "title": "This is Document Number 3",
+                "permalink": "/docs/doc3"
+              }
+            },
+            {
+              "unversionedId": "doc3",
+              "id": "doc3",
+              "isDocsHomePage": false,
+              "title": "This is Document Number 3",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac euismod odio, eu consequat dui. Nullam molestie consectetur risus id imperdiet. Proin sodales ornare turpis, non mollis massa ultricies id. Nam at nibh scelerisque, feugiat ante non, dapibus tortor. Vivamus volutpat diam quis tellus elementum bibendum. Praesent semper gravida velit quis aliquam. Etiam in cursus neque. Nam lectus ligula, malesuada et mauris a, bibendum faucibus mi. Phasellus ut interdum felis. Phasellus in odio pulvinar, porttitor urna eget, fringilla lectus. Aliquam sollicitudin est eros. Mauris consectetur quam vitae mauris interdum hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+              "source": "@site/docs/doc3.md",
+              "slug": "/doc3",
+              "permalink": "/docs/doc3",
+              "version": "current",
+              "sidebar": "mainSidebar",
+              "previous": {
+                "title": "Document Number 2",
+                "permalink": "/docs/doc2"
+              }
+            },
+            {
+              "unversionedId": "gettingStarted/gettingStarted",
+              "id": "gettingStarted/gettingStarted",
+              "isDocsHomePage": false,
+              "title": "Getting Started",
+              "description": "So you're new to Praxis, you've read some of the cool stuff that it can do and",
+              "source": "@site/docs/gettingStarted/gettingStarted.md",
+              "slug": "/gettingStarted/gettingStarted",
+              "permalink": "/docs/gettingStarted/gettingStarted",
+              "version": "current",
+              "sidebar_label": "Getting Started",
+              "sidebar": "mainSidebar",
+              "previous": {
+                "title": "Installation",
+                "permalink": "/docs/intro/installation"
+              },
+              "next": {
+                "title": "Document Number 2",
+                "permalink": "/docs/doc2"
+              }
+            },
+            {
+              "unversionedId": "intro/installation",
+              "id": "intro/installation",
+              "isDocsHomePage": false,
+              "title": "Installation",
+              "description": "Installing Praxis",
+              "source": "@site/docs/intro/installation.md",
+              "slug": "/intro/installation",
+              "permalink": "/docs/intro/installation",
+              "version": "current",
+              "sidebar": "mainSidebar",
+              "previous": {
+                "title": "Introduction",
+                "permalink": "/docs/intro/intro"
+              },
+              "next": {
+                "title": "Getting Started",
+                "permalink": "/docs/gettingStarted/gettingStarted"
+              }
+            },
+            {
+              "unversionedId": "intro/intro",
+              "id": "intro/intro",
+              "isDocsHomePage": false,
+              "title": "Introduction",
+              "description": "Welcome to Praxis. If you're new, check out the getting started guide. More",
+              "source": "@site/docs/intro/intro.md",
+              "slug": "/intro/intro",
+              "permalink": "/docs/intro/intro",
+              "version": "current",
+              "sidebar_label": "Intro",
+              "sidebar": "mainSidebar",
+              "next": {
+                "title": "Installation",
+                "permalink": "/docs/intro/installation"
+              }
+            },
+            {
+              "unversionedId": "mdx",
+              "id": "mdx",
+              "isDocsHomePage": false,
+              "title": "Powered by MDX",
+              "description": "You can write JSX and use React components within your Markdown thanks to MDX.",
+              "source": "@site/docs/mdx.md",
+              "slug": "/mdx",
+              "permalink": "/docs/mdx",
+              "version": "current"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogPosts": [
+        {
+          "id": "A large blog post",
+          "metadata": {
+            "permalink": "/blog/2020/04/14/large-blog-post",
+            "source": "@site/blog/2020-04-14-large-blog-post.md",
+            "description": "Hello, this is an example",
+            "date": "2020-04-14T00:00:00.000Z",
+            "tags": [
+              {
+                "label": "blog",
+                "permalink": "/blog/tags/blog"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "title": "A large blog post",
+            "readingTime": 4.085,
+            "truncated": true,
+            "nextItem": {
+              "title": "Blog Plugin",
+              "permalink": "/blog/2020/04/14/blog-plugin"
+            }
+          }
+        },
+        {
+          "id": "Blog Plugin",
+          "metadata": {
+            "permalink": "/blog/2020/04/14/blog-plugin",
+            "source": "@site/blog/2020-04-14-blog-plugin.md",
+            "description": "You can use our blog plugin to do your posts",
+            "date": "2020-04-14T00:00:00.000Z",
+            "tags": [
+              {
+                "label": "blog",
+                "permalink": "/blog/tags/blog"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "title": "Blog Plugin",
+            "readingTime": 0.145,
+            "truncated": true,
+            "prevItem": {
+              "title": "A large blog post",
+              "permalink": "/blog/2020/04/14/large-blog-post"
+            },
+            "nextItem": {
+              "title": "Welcome",
+              "permalink": "/blog/welcome"
+            }
+          }
+        },
+        {
+          "id": "welcome",
+          "metadata": {
+            "permalink": "/blog/welcome",
+            "source": "@site/blog/2019-05-30-welcome.md",
+            "description": "Blog features are powered by the blog plugin. Simply add files to the blog directory. It supports tags as well!",
+            "date": "2019-05-30T00:00:00.000Z",
+            "tags": [
+              {
+                "label": "facebook",
+                "permalink": "/blog/tags/facebook"
+              },
+              {
+                "label": "hello",
+                "permalink": "/blog/tags/hello"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "title": "Welcome",
+            "readingTime": 0.175,
+            "truncated": false,
+            "prevItem": {
+              "title": "Blog Plugin",
+              "permalink": "/blog/2020/04/14/blog-plugin"
+            },
+            "nextItem": {
+              "title": "Hello",
+              "permalink": "/blog/hello-world"
+            }
+          }
+        },
+        {
+          "id": "hello-world",
+          "metadata": {
+            "permalink": "/blog/hello-world",
+            "source": "@site/blog/2019-05-29-hello-world.md",
+            "description": "Welcome to this blog. This blog is created with Docusaurus 2 alpha.",
+            "date": "2019-05-29T00:00:00.000Z",
+            "tags": [
+              {
+                "label": "hello",
+                "permalink": "/blog/tags/hello"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "title": "Hello",
+            "readingTime": 0.12,
+            "truncated": true,
+            "prevItem": {
+              "title": "Welcome",
+              "permalink": "/blog/welcome"
+            },
+            "nextItem": {
+              "title": "Hola",
+              "permalink": "/blog/hola"
+            }
+          }
+        },
+        {
+          "id": "hola",
+          "metadata": {
+            "permalink": "/blog/hola",
+            "source": "@site/blog/2019-05-28-hola.md",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+            "date": "2019-05-28T00:00:00.000Z",
+            "tags": [
+              {
+                "label": "hola",
+                "permalink": "/blog/tags/hola"
+              },
+              {
+                "label": "docusaurus",
+                "permalink": "/blog/tags/docusaurus"
+              }
+            ],
+            "title": "Hola",
+            "readingTime": 0.12,
+            "truncated": false,
+            "prevItem": {
+              "title": "Hello",
+              "permalink": "/blog/hello-world"
+            }
+          }
+        }
+      ],
+      "blogListPaginated": [
+        {
+          "metadata": {
+            "permalink": "/blog",
+            "page": 1,
+            "postsPerPage": 10,
+            "totalPages": 1,
+            "totalCount": 5,
+            "previousPage": null,
+            "nextPage": null,
+            "blogDescription": "Blog",
+            "blogTitle": "Blog"
+          },
+          "items": [
+            "A large blog post",
+            "Blog Plugin",
+            "welcome",
+            "hello-world",
+            "hola"
+          ]
+        }
+      ],
+      "blogTags": {
+        "blog": {
+          "name": "blog",
+          "items": [
+            "A large blog post",
+            "Blog Plugin"
+          ],
+          "permalink": "/blog/tags/blog"
+        },
+        "docusaurus": {
+          "name": "docusaurus",
+          "items": [
+            "A large blog post",
+            "Blog Plugin",
+            "welcome",
+            "hello-world",
+            "hola"
+          ],
+          "permalink": "/blog/tags/docusaurus"
+        },
+        "facebook": {
+          "name": "facebook",
+          "items": [
+            "welcome"
+          ],
+          "permalink": "/blog/tags/facebook"
+        },
+        "hello": {
+          "name": "hello",
+          "items": [
+            "welcome",
+            "hello-world"
+          ],
+          "permalink": "/blog/tags/hello"
+        },
+        "hola": {
+          "name": "hola",
+          "items": [
+            "hola"
+          ],
+          "permalink": "/blog/tags/hola"
+        }
+      },
+      "blogTagsListPath": "/blog/tags"
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {
+    "default": null
+  },
+  "docusaurus-theme-classic": {
+    "default": null
+  }
+}

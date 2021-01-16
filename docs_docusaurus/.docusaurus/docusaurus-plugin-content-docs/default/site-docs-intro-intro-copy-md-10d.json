@@ -1,0 +1,17 @@
+{
+  "unversionedId": "intro/intro",
+  "id": "intro/intro",
+  "isDocsHomePage": false,
+  "title": "Introduction",
+  "description": "Welcome to Praxis. If you're new, check out the getting started guide. More",
+  "source": "@site/docs/intro/intro copy.md",
+  "slug": "/intro/intro",
+  "permalink": "/docs/intro/intro",
+  "version": "current",
+  "sidebar_label": "Intro",
+  "sidebar": "mainSidebar",
+  "next": {
+    "title": "Getting Started",
+    "permalink": "/docs/gettingStarted/gettingStarted"
+  }
+}

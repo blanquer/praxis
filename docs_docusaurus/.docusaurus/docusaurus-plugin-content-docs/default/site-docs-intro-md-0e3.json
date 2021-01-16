@@ -1,0 +1,18 @@
+{
+  "unversionedId": "intro",
+  "id": "intro",
+  "isDocsHomePage": false,
+  "title": "Introduction",
+  "description": "Welcome to Praxis. If you're new, check out the getting started guide. More",
+  "source": "@site/docs/intro.md",
+  "slug": "/",
+  "permalink": "/docs/",
+  "editUrl": "https://github.com/praxis/praxis/docs/intro.md",
+  "version": "current",
+  "sidebar_label": "Intro",
+  "sidebar": "someSidebar",
+  "next": {
+    "title": "Style Guide",
+    "permalink": "/docs/"
+  }
+}

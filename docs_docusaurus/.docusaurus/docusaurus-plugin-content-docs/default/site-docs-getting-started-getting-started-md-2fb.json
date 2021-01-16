@@ -1,0 +1,21 @@
+{
+  "unversionedId": "gettingStarted/gettingStarted",
+  "id": "gettingStarted/gettingStarted",
+  "isDocsHomePage": false,
+  "title": "Getting Started",
+  "description": "So you're new to Praxis, you've read some of the cool stuff that it can do and",
+  "source": "@site/docs/gettingStarted/gettingStarted.md",
+  "slug": "/gettingStarted/gettingStarted",
+  "permalink": "/docs/gettingStarted/gettingStarted",
+  "version": "current",
+  "sidebar_label": "Getting Started",
+  "sidebar": "mainSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/docs/intro/installation"
+  },
+  "next": {
+    "title": "Document Number 2",
+    "permalink": "/docs/doc2"
+  }
+}

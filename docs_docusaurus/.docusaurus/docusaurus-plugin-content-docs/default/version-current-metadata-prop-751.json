@@ -1,0 +1,56 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "isLast": true,
+  "docsSidebars": {
+    "mainSidebar": [
+      {
+        "collapsed": true,
+        "type": "category",
+        "label": "Intro",
+        "items": [
+          {
+            "type": "link",
+            "label": "Intro",
+            "href": "/docs/intro/intro"
+          },
+          {
+            "type": "link",
+            "label": "Installation",
+            "href": "/docs/intro/installation"
+          }
+        ]
+      },
+      {
+        "collapsed": false,
+        "type": "category",
+        "label": "Getting Started",
+        "items": [
+          {
+            "type": "link",
+            "label": "Getting Started",
+            "href": "/docs/gettingStarted/gettingStarted"
+          },
+          {
+            "type": "link",
+            "label": "Document Number 2",
+            "href": "/docs/doc2"
+          },
+          {
+            "type": "link",
+            "label": "This is Document Number 3",
+            "href": "/docs/doc3"
+          }
+        ]
+      }
+    ]
+  },
+  "permalinkToSidebar": {
+    "/docs/doc2": "mainSidebar",
+    "/docs/doc3": "mainSidebar",
+    "/docs/gettingStarted/gettingStarted": "mainSidebar",
+    "/docs/intro/installation": "mainSidebar",
+    "/docs/intro/intro": "mainSidebar"
+  }
+}
