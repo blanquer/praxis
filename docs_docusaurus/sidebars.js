@@ -8,10 +8,21 @@ module.exports = {
         'intro/installation'
       ]
     },
+    // {
+    //   type: 'doc',
+    //   id: 'gettingStarted/gettingStarted'
+    // },
     {
-      type: 'doc',
-      id: 'gettingStarted/gettingStarted'
-    },
+      type: 'category',
+      label: 'Getting Started',
+      collapsed: false,
+      items: [
+        'gettingStarted/intro', 
+        'gettingStarted/gettingStarted',
+        'gettingStarted/settingUpOurDB',
+        'gettingStarted/implementingOurAPI',
+      ]
+    },    
     {
       type: 'category',
       label: 'Other things',
