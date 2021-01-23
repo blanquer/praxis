@@ -6,8 +6,149 @@ sidebar_label: Getting Started
 So you're new to Praxis, you've read some of the cool stuff that it can do and
 you're ready to see it to believe it?
 
-Great! Let's get started by creating a very simple API, from scratch, which will
-be able to serve a collection of existing users from the DB.(or from memory?)
+Great! Let's show you how easy it is to create a fully functioning API from scratch, which
+will be able to serve Posts (that are authored by Users), each of which can contain comments
+where each comment is also made by one of the existing users.
+To simplify the setup we will use the embedded sequel Lite DB, but you can easily configure
+the app later on to work against a real MySQL or Postgres if you'd like.
+
+The first thing to do is to create a base Praxis application. To do so, let's use the Praxis
+example generator to build us a simple API which can serve Users.
+
+```shell
+gem install praxis # Let's make sure we have Praxis installed in the system
+bundle exec praxis example firstapp && cd firstapp
+bundle
+```
+At this point we already have a fully bundled Praxis app. We can trivially start on port 9292 it by migrating it and starting rack (i.e., bundle exec rake db:recreate && bundle rackup). But since we'll add more resources, we can do that at the end.
+
+Ok, so our goal was to build an API that contains `Posts` and embedded `Comments`. So let's first scaffold the design and implementation of both. To do so, the easiest way is to use the Praxis scaffold generator, so let's do that:
+
+```shell
+bundle exec praxis g posts --model
+bundle exec praxis g comments --model
+```
+Each of these scaffold generation commands will create the design files (MediaType and Endpoint) as well as the corresponding implementation files that go with it (Controller and Resource). Since we know we're gonna use a DB, we also explicitly asked the generator to create a model file for us (defaults to an ActiveRecord model, but Sequel is also supported)
+
+Next, we need to put on our Design hat to fill in the API attributes that Posts and Comments will have. For now, let's assume that a Post simply has an `id` (Integer), a `contents` (String) and an author (a `User`). So let's add these attributes into the Post MediaType so that it looks like:
+
+```ruby
+attributes do
+  attribute :id, Integer
+  attribute :content, String
+  attribute :author, MediaTypes::User
+end
+```
+
+Similarly, let's assume that beyond its `id`, we want a `Comment` to have some `contents` (String), a related `Post` and the `User` that wrote it. To achieve that we need our `Comment`'s attributes to look like this:
+
+```ruby
+attributes do
+  attribute :id, Integer
+  attribute :content, String
+  attribute :post, MediaTypes::Post
+  attribute :user, MediaTypes::User
+end
+```
+
+To make those changes you can either edit the `post.rb` and `comment.rb` inside the `design/v1/media_types/` directory, or can copy paste this shell snippet to do exacly the same for you:
+
+```shell
+sed -i '' '/.*<INSERT MORE ATTRIBUTES HERE>.*/i \
+  attribute :content, String \
+  attribute :author, MediaTypes::User \
+' design/v1/media_types/post.rb
+
+sed -i '' '/.*<INSERT MORE ATTRIBUTES HERE>.*/i \
+  attribute :content, String \
+  attribute :post, MediaTypes::Post \
+  attribute :user, MediaTypes::User \
+' design/v1/media_types/comment.rb
+```
+
+That's it! you now have a fully configured API which can serve Posts, Comments and Users to your liking.
+The only thing we need to do to run it is to have an actual backing DB with the appropriate tables, tell the ORM (ActiveRecord) about their existing associations and maybe insert some interesting data in to the DB. Feel free to do that however you want (this is not Praxis related at all), or if you want you can just run the few shell commands below to achieve it (see the copy button on hover):
+
+```shell title="Create an ActiveRecord migration for posts and comments"
+cat <<EOT > db/migrate/20210101010111_create_posts_and_comments_table.rb
+class CreatePostsAndCommentsTable < ActiveRecord::Migration[5.2]
+  def change
+    create_table :posts do |t|
+      t.column :title, :string
+      t.column :content, :text
+      t.column :author_id, :integer
+    end
+    create_table :comments do |t|
+      t.column :content, :string
+      t.column :post_id, :integer
+      t.column :user_id, :integer
+    end
+  end
+end
+EOT
+```
+
+```shell title="Define the associations to the Post and Comment models"
+sed -i '' '/.*end/i \
+  belongs_to :author, class_name: "User" \
+  has_many :comments \
+' app/models/post.rb
+
+sed -i '' '/.*end/i \
+  belongs_to :post \
+  belongs_to :user \
+' app/models/comment.rb
+```
+
+```shell title="Create some useful data when seeding the DB"
+cat <<EOT >> db/seeds.rb
+peter = ::User.find(11)
+alice = ::User.find(12)
+post1 = ::Post.create(content:'Post from Peter', author: peter)
+post1.comments.create(content: 'Nice post!', user: alice)
+::Post.create(content:'Post2 from Peter', author: peter)
+post2 = ::Post.create(content:'Post from Alice', author: alice)
+post2.comments.create(content: 'Good one Alice!', user: peter)
+EOT
+```
+
+and with that, we are ready to recreate the DB and start our brand new API:
+
+```shell
+# Rebuild the DB, with the new seeds
+bundle exec rake db:recreate
+bundle exec rackup
+end
+```
+
+et Voilá! Our Posts/Comments/Users API is up and running! Let's take it for a spin shall we? Here are some example queries you can start trying from another terminal:
+
+```shell
+# Get all posts in the DB but only include:
+#  -- id, contents and author (with only first_name)
+curl 'http://localhost:9292/posts?api_version=1' -G \
+      --data-urlencode "fields=id,content,author{first_name}"
+
+# Retrieve DB Comment with id 1, but only include:
+#  -- id, contents, related post (only id) and related user (only first_name)
+curl 'http://localhost:9292/comments/1?api_version=1' -G \
+  --data-urlencode "fields=id,content,post{id},user{first_name}"
+```
+
+And there you go, you have a fully functioning API that is able to query items related collections from a real DB, with full support for GraphQL-style field selection. You're more than welcome to enable SQL logging and see how efficient the queries are...without having written a single line of controller or ORM line! (To enable logging the easiest is to add `ActiveRecord::Base.logger = Logger.new(STDOUT)` towards the end of `config.ru`)
+
+Do you want to see the full API documentation of what we just built? no problem, generate the OpenAPI docs and view them using ReDoc by:
+
+```shell
+praxis docs preview
+```
+
+Nice eh? Did this leave you thirsty for more? Ok, challenge accepted, let's go for extra credit by showing you how you can trivially enable powerful pagination and query filtering.
+
+# OLD STUFF
+We have it all in place, DB tables and data inserted included
+ and to do that we will use the
+bundled generators. We can start by generating an empty app, but there is a generator for an example app that comes with a simple Users API
 
 Create an empty app
 Use a Generator to create the empty scaffolding for our Users (design and implementation)

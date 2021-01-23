@@ -9,10 +9,14 @@ module.exports = {
       ]
     },
     {
+      type: 'doc',
+      id: 'gettingStarted/gettingStarted'
+    },
+    {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Other things',
       collapsed: false,
-      items: ['gettingStarted/gettingStarted', 'doc2', 'doc3']
+      items: ['doc2', 'doc3']
     }
   ]  
 };
