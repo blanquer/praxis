@@ -21,6 +21,8 @@ module.exports = {
         'gettingStarted/gettingStarted',
         'gettingStarted/settingUpOurDB',
         'gettingStarted/implementingOurAPI',
+        'gettingStarted/buildingFiltering',
+        'gettingStarted/buildingCRUD',                
       ]
     },    
     {

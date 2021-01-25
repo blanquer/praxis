@@ -46,11 +46,12 @@ And the last thing we might want to do to setup the storage layer, is to fill in
 cat <<EOT >> db/seeds.rb
 peter = ::User.find(11)
 alice = ::User.find(12)
-post1 = ::Post.create(content:'Post from Peter', author: peter)
+post1 = ::Post.create(title: 'My first post', content:'Post from Peter', author: peter)
 post1.comments.create(content: 'Nice post!', user: alice)
 ::Post.create(content:'Post2 from Peter', author: peter)
-post2 = ::Post.create(content:'Post from Alice', author: alice)
+post2 = ::Post.create(title: 'My first post', content:'Post from Alice', author: alice)
 post2.comments.create(content: 'Good one Alice!', user: peter)
+post3 = ::Post.create(title: 'My other post', content:'Peter Post No Comments', author: peter)
 EOT
 ```
 

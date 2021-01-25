@@ -14,12 +14,13 @@ Each of these scaffold generation commands will create the design files (MediaTy
 
 Since we didn't specify the `--no-implementation` the genarator above also has also created the corresponding implementation files that go with the given design (Controller and Resource). We commonly would want to generate the implementation side of the API after we're happy with the design, but for the sake of this guide we'll just generate them all at once. Also, since we know we're gonna use a DB, we also explicitly asked the generator to create the model file for us with `--model` (defaults to an ActiveRecord model, but Sequel is also supported)
 
-So with all that scaffolding in place, it's time to put on our Design hat to fill in the API attributes that we want `Posts` and `Comments` to have. For now, let's assume that a Post simply has an `id` (Integer), a `contents` (String) and an author (a `User`). So let's add these attributes into the Post MediaType so that it looks like:
+So with all that scaffolding in place, it's time to put on our Design hat to fill in the API attributes that we want `Posts` and `Comments` to have. For now, let's assume that a Post simply has an `id` (Integer), a `title` (String), some `contents` (String) and an author (a `User`). So let's add these attributes into the Post MediaType so that it looks like:
 
 ```ruby
 attributes do
   attribute :id, Integer
-  attribute :content, String
+  attribute :title, String
+  attribute :content, String  
   attribute :author, MediaTypes::User
 end
 ```
