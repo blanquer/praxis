@@ -40,6 +40,7 @@ To make those changes you can either edit the `post.rb` and `comment.rb` inside 
 
 ```shell
 sed -i '' '/.*<INSERT MORE ATTRIBUTES HERE>.*/i \
+  attribute :title, String \
   attribute :content, String \
   attribute :author, MediaTypes::User \
 ' design/v1/media_types/post.rb
